@@ -18,7 +18,6 @@ import DropDown from "react-native-paper-dropdown";
 import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
-import mime from "mime";
 import Axios, { endpoints } from "../../../Axios";
 import { isNumeric } from "../../../Utils";
 import GlobalStyles from "../../../styles/GlobalStyles";
@@ -43,38 +42,38 @@ const AlumniRegisterScreen = () => {
         image: '',
     });
     const [alumniErrorMessage, setAlumniErrorMessage] = useState({
-        firstName: '',
-        lastName: '',
-        dateOfBirth: '',
-        gender: '',
-        studentId: '',
-        faculty: '',
-        major: '',
-        schoolYear: '',
+        firstName: 'Vui lòng nhập tên.',
+        lastName: 'Vui lòng nhập họ.',
+        dateOfBirth: 'Vui lòng nhập ngày sinh.',
+        gender: 'Vui lòng chọn giới tính.',
+        studentId: 'Vui lòng nhập mã số sinh viên.',
+        faculty: 'Vui lòng chọn khoa.',
+        major: 'Vui lòng chọn ngành.',
+        schoolYear: 'Vui lòng chọn niên khóa.',
         workplace: '',
         position: '',
-        email: '',
-        username: '',
-        password: '',
-        confirmPassword: '',
-        image: '',
+        email: 'Vui lòng nhập email.',
+        username: 'Vui lòng nhập tên người dùng.',
+        password: 'Vui lòng nhập mật khẩu.',
+        confirmPassword: 'Vui lòng nhập lại mật khẩu.',
+        image: 'Vui lòng chọn hình ảnh.',
     });
     const [showAlumniError, setShowAlumniError] = useState({
-        firstName: '',
-        lastName: '',
-        dateOfBirth: '',
-        gender: '',
-        studentId: '',
-        faculty: '',
-        major: '',
-        schoolYear: '',
-        workplace: '',
-        position: '',
-        email: '',
-        username: '',
-        password: '',
-        confirmPassword: '',
-        image: '',
+        firstName: false,
+        lastName: false,
+        dateOfBirth: false,
+        gender: false,
+        studentId: false,
+        faculty: false,
+        major: false,
+        schoolYear: false,
+        workplace: false,
+        position: false,
+        email: false,
+        username: false,
+        password: false,
+        confirmPassword: false,
+        image: false,
     });
     const [loading, setLoading] = useState(false);
     const [dialogTitle, setDialogTitle] = useState('');
@@ -150,26 +149,6 @@ const AlumniRegisterScreen = () => {
         loadGenders();
         loadFaculties();
         loadSchoolYears();
-
-        handleChangeAlumniErrorMessage('firstName', 'Vui lòng nhập tên.');
-        handleChangeAlumniErrorMessage('lastName', 'Vui lòng nhập họ.');
-        handleChangeAlumniErrorMessage('dateOfBirth', 'Vui lòng nhập ngày sinh.');
-        handleChangeAlumniErrorMessage('gender', 'Vui lòng chọn giới tính.');
-        handleChangeAlumniErrorMessage('studentId', 'Vui lòng nhập mã số sinh viên.');
-        handleChangeAlumniErrorMessage('faculty', 'Vui lòng chọn khoa.');
-        handleChangeAlumniErrorMessage('major', 'Vui lòng chọn ngành.');
-        handleChangeAlumniErrorMessage('schoolYear', 'Vui lòng chọn niên khóa.');
-        handleChangeAlumniErrorMessage('workplace', '');
-        handleChangeAlumniErrorMessage('position', '');
-        handleChangeAlumniErrorMessage('email', 'Vui lòng nhập email.');
-        handleChangeAlumniErrorMessage('username', 'Vui lòng nhập tên người dùng.');
-        handleChangeAlumniErrorMessage('password', 'Vui lòng nhập mật khẩu.');
-        handleChangeAlumniErrorMessage('confirmPassword', 'Vui lòng nhập mật khẩu xác nhận.');
-        handleChangeAlumniErrorMessage('image', 'Vui lòng chọn hình ảnh.');
-
-        for (const key in showAlumniError) {
-            handleChangeShowAlumniError(key, false);
-        }
     }, []);
 
     useEffect(() => {
@@ -260,13 +239,13 @@ const AlumniRegisterScreen = () => {
                     if (alumni[key]) {
                         const password = alumni['password'];
                         if (alumni[key] !== password) {
-                            handleChangeAlumniErrorMessage('confirmPassword', 'Mật khẩu xác nhận không khớp.')
+                            handleChangeAlumniErrorMessage('confirmPassword', 'Mật khẩu nhập lại không khớp mật khẩu.')
                             handleChangeShowAlumniError('confirmPassword', true);
                         } else {
                             handleChangeShowAlumniError('confirmPassword', false);
                         }
                     } else {
-                        handleChangeAlumniErrorMessage('confirmPassword', 'Vui lòng nhập mật khẩu xác nhận.');
+                        handleChangeAlumniErrorMessage('confirmPassword', 'Vui lòng nhập lại mật khẩu.');
                         handleChangeShowAlumniError('confirmPassword', true);
                     }
                     break;
@@ -294,7 +273,7 @@ const AlumniRegisterScreen = () => {
                     image: {
                         uri: alumni.image.uri,
                         name: alumni.image.fileName,
-                        type: mime.getType(alumni.image.uri),
+                        type: alumni.image.mimeType,
                     },
                     faculty: alumni.faculty,
                     major: alumni.major,
@@ -387,6 +366,7 @@ const AlumniRegisterScreen = () => {
                 <Avatar.Icon size={100} icon='book-open-blank-variant' />
                 <Title>OU Alumnis</Title>
             </View>
+
             <ScrollView>
                 <View style={{
                     flexDirection: 'row',
@@ -424,6 +404,7 @@ const AlumniRegisterScreen = () => {
                         </HelperText>
                     </View>
                 </View>
+
                 <View>
                     <DatePickerInput
                         ref={dateOfBirthRef}
@@ -440,6 +421,7 @@ const AlumniRegisterScreen = () => {
                         {alumniErrorMessage.dateOfBirth}
                     </HelperText>
                 </View>
+
                 <View>
                     <DropDown
                         ref={genderRef}
@@ -464,6 +446,7 @@ const AlumniRegisterScreen = () => {
                         {alumniErrorMessage.gender}
                     </HelperText>
                 </View>
+
                 <View>
                     <TextInput
                         ref={studentIdRef}
@@ -479,6 +462,7 @@ const AlumniRegisterScreen = () => {
                         {alumniErrorMessage.studentId}
                     </HelperText>
                 </View>
+
                 <View>
                     <DropDown
                         ref={facultyRef}
@@ -503,6 +487,7 @@ const AlumniRegisterScreen = () => {
                         {alumniErrorMessage.faculty}
                     </HelperText>
                 </View>
+
                 <View>
                     <DropDown
                         ref={majorRef}
@@ -527,6 +512,7 @@ const AlumniRegisterScreen = () => {
                         {alumniErrorMessage.major}
                     </HelperText>
                 </View>
+
                 <View>
                     <DropDown
                         ref={schoolYearRef}
@@ -551,6 +537,7 @@ const AlumniRegisterScreen = () => {
                         {alumniErrorMessage.schoolYear}
                     </HelperText>
                 </View>
+
                 <View>
                     <TextInput
                         ref={workplaceRef}
@@ -562,6 +549,7 @@ const AlumniRegisterScreen = () => {
                     />
                     <HelperText type='error' visible={false}></HelperText>
                 </View>
+
                 <View>
                     <TextInput
                         ref={positionRef}
@@ -573,6 +561,7 @@ const AlumniRegisterScreen = () => {
                     />
                     <HelperText type='error' visible={false}></HelperText>
                 </View>
+
                 <View>
                     <TextInput
                         ref={emailRef}
@@ -591,6 +580,7 @@ const AlumniRegisterScreen = () => {
                         {alumniErrorMessage.email}
                     </HelperText>
                 </View>
+
                 <View>
                     <TextInput
                         ref={usernameRef}
@@ -607,6 +597,7 @@ const AlumniRegisterScreen = () => {
                         {alumniErrorMessage.username}
                     </HelperText>
                 </View>
+
                 <View>
                     <TextInput
                         ref={passwordRef}
@@ -629,6 +620,7 @@ const AlumniRegisterScreen = () => {
                         {alumniErrorMessage.password}
                     </HelperText>
                 </View>
+
                 <View>
                     <TextInput
                         ref={confirmPasswordRef}
@@ -643,13 +635,14 @@ const AlumniRegisterScreen = () => {
                                 color={showAlumniError.confirmPassword ? theme.colors.error : undefined}
                             />
                         }
-                        label='Mật khẩu xác nhận'
+                        label='Nhập lại mật khẩu'
                         error={showAlumniError.confirmPassword}
                     />
                     <HelperText type='error' visible={showAlumniError.confirmPassword}>
                         {alumniErrorMessage.confirmPassword}
                     </HelperText>
                 </View>
+
                 <View style={{
                     marginTop: 12,
                     marginBottom: 5
@@ -660,7 +653,7 @@ const AlumniRegisterScreen = () => {
                     }}>
                         <Card.Cover
                             source={alumni.image ? { uri: alumni.image.uri } : require('../../../assets/images/default-image.jpg')}
-                            style={{ ...styles.image }}
+                            style={{ ...styles.image, height: 400 }}
                         />
                         <Button
                             mode='text'
@@ -677,6 +670,7 @@ const AlumniRegisterScreen = () => {
                     </HelperText>
                 </View>
             </ScrollView >
+
             <View style={styles.actions}>
                 <Button style={styles.registerButton} mode='contained' onPress={handleRegister}>
                     {loading ? <ActivityIndicator color={theme.colors.onPrimary} size={18} /> : 'Đăng ký'}

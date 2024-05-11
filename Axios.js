@@ -9,6 +9,7 @@ export const endpoints = {
     'school-years': '/school-years/',
     'login': '/o/token/',
     'currentUser': '/users/current-user/',
+    'checkPassword': '/users/check-password/',
     'alumniRegister': '/alumni-profiles/register/',
 }
 

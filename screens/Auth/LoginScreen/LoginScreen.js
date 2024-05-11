@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { View } from "react-native";
 import {
     ActivityIndicator,
@@ -20,10 +20,11 @@ import GlobalStyles from "../../../styles/GlobalStyles";
 import styles from "./styles";
 
 const LoginScreen = () => {
+    const [currentUser, dispatch] = useContext(UserContext);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [usernameErrorMessage, setUsernameErrorMessage] = useState('');
-    const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
+    const [usernameErrorMessage, setUsernameErrorMessage] = useState('Vui lòng nhập tên người dùng.');
+    const [passwordErrorMessage, setPasswordErrorMessage] = useState('Vui lòng nhập mật khẩu.');
     const [errorMessage, setErrorMessage] = useState('');
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
@@ -36,12 +37,6 @@ const LoginScreen = () => {
 
     const theme = useTheme();
     const navigation = useNavigation();
-    const [, dispatch] = useContext(UserContext);
-
-    useEffect(() => {
-        setUsernameErrorMessage('Vui lòng nhập tên người dùng.');
-        setPasswordErrorMessage('Vui lòng nhập mật khẩu.');
-    }, []);
 
     const handleShowPassword = () => {
         setShowPassword(!showPassword);

@@ -10,7 +10,7 @@ const NotificationsScreen = () => {
         <View style={{ ...GlobalStyles.container, ...styles.container, backgroundColor: theme.colors.background }}>
             <Text>Notifications screen</Text>
         </View>
-    )
+    );
 }
 
 export default NotificationsScreen;

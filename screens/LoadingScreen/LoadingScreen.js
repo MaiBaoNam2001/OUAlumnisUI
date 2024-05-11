@@ -35,7 +35,7 @@ const LoadingScreen = () => {
                     if (error.response.status === 500) {
                         setLockUserAccount(true)
                     } else {
-                        const refreshToken = await AsyncStorage.getItem('refresh_token');
+                        const refreshToken = await AsyncStorage.getItem('refresh-token');
 
                         try {
                             const res = await Axios.post(endpoints['login'], {

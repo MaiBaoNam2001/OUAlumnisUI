@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     },
     logo: {
         alignItems: 'center',
-        paddingTop: 10,
+        marginTop: 10,
     },
     firstNameInput: {
         flex: 5,
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
         paddingTop: 10,
     },
     registerButton: {
-        marginBottom: 15,
+        marginBottom: 20,
     }
 });
 

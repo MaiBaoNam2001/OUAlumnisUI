@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     loginButton: {
-        marginBottom: 15,
+        marginBottom: 20,
     }
 });
 
