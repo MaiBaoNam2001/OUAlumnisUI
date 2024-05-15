@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingVertical: 20,
+        paddingTop: 20,
     },
     header: {
         flexDirection: 'row',
@@ -21,9 +21,10 @@ const styles = StyleSheet.create({
     },
     content: {
         paddingHorizontal: 20,
+        paddingTop: 10,
     },
     contentItem: {
-        marginVertical: 5,
+        marginBottom: 10,
     },
     listSubHeader: {
         fontSize: 18,

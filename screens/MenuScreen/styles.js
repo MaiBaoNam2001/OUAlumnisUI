@@ -6,8 +6,9 @@ const styles = StyleSheet.create({
     },
     header: {
         flexDirection: 'row',
-        justifyContent: "space-between",
+        justifyContent: 'space-between',
         marginTop: 20,
+        paddingBottom: 20,
     },
     title: {
         flex: 5,
@@ -18,9 +19,6 @@ const styles = StyleSheet.create({
         flex: 5,
         alignItems: 'flex-end',
         justifyContent: 'center',
-    },
-    profile: {
-        marginVertical: 20
     },
     passwordChangeButton: {
         marginBottom: 20,

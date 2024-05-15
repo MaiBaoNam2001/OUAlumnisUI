@@ -52,11 +52,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
     },
-    listSubHeader: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        paddingHorizontal: 0,
-    }
 });
 
 export default styles;

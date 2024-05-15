@@ -48,7 +48,7 @@ const UserInfoScreen = () => {
 
             <Divider />
 
-            <ScrollView style={styles.content}>
+            <ScrollView contentContainerStyle={styles.content}>
                 {authUser?.role === 'ALUMNI' &&
                     <View style={styles.contentItem}>
                         <List.Section>

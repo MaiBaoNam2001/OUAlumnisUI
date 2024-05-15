@@ -69,7 +69,7 @@ const MenuScreen = () => {
                     </View>
                 </View>
 
-                <TouchableOpacity style={styles.profile} onPress={handleNavigateToProfileScreen}>
+                <TouchableOpacity onPress={handleNavigateToProfileScreen}>
                     <Card>
                         <Card.Title
                             title={`${authUser?.last_name} ${authUser?.first_name}`}
