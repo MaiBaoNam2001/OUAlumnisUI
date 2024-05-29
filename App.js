@@ -1,5 +1,5 @@
-import 'react-native-gesture-handler';
 import { useReducer } from 'react';
+import { useTheme } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -23,6 +23,7 @@ const Tab = createBottomTabNavigator();
 const App = () => {
   const [currentUser, dispatch] = useReducer(UserReducer, null);
 
+  const theme = useTheme();
 
   return (
     <UserContext.Provider value={[currentUser, dispatch]}>
@@ -32,9 +33,13 @@ const App = () => {
           screenOptions={{
             headerShown: false,
             tabBarStyle: {
-              backgroundColor: '#000',
+              backgroundColor: theme.colors.background,
+              height: 60,
             },
-            tabBarActiveTintColor: 'rgb(220, 184, 255)',
+            tabBarItemStyle: {
+              marginVertical: 10,
+            },
+            tabBarActiveTintColor: theme.colors.primary,
           }}
         >
           <Tab.Screen

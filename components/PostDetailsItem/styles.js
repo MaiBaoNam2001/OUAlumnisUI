@@ -3,7 +3,6 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
     post: {
         borderRadius: 0,
-        marginBottom: 10,
     },
     postTitle: {
         paddingLeft: 20,
@@ -33,8 +32,11 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     postContentImages: {
-        width: '100%',
-        marginBottom: 10,
+        marginTop: 10,
+    },
+    postContentImage: {
+        height: 400,
+        marginBottom: 20,
     },
     postInteractionStatistics: {
         flexDirection: 'row',

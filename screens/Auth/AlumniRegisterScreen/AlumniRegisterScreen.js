@@ -302,7 +302,7 @@ const AlumniRegisterScreen = () => {
             } catch (error) {
                 const errorMessages = Object.fromEntries([
                     ['alumnis_alumniprofile.student_id', 'Mã số sinh viên đã tồn tại.'],
-                    ['alumnis_user.alumnis_user_email_51a0b4a2_uniq', 'Địa chỉ email đã tồn tại.'],
+                    ['alumnis_user.email', 'Địa chỉ email đã tồn tại.'],
                     ['alumnis_user.username', 'Tên người dùng đã tồn tại.'],
                 ]);
 

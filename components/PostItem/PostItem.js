@@ -1,5 +1,5 @@
-import { useContext, useRef, useState } from "react";
-import { ScrollView, TextInput, TouchableOpacity, View } from "react-native";
+import { useCallback, useContext, useRef, useState } from "react";
+import { TouchableOpacity, View } from "react-native";
 import {
     Avatar,
     Button,
@@ -10,14 +10,13 @@ import {
     Paragraph,
     Portal,
     Text,
-    Title,
     useTheme
 } from "react-native-paper";
-import Modal from "react-native-modal";
-import { useNavigation } from "@react-navigation/native";
 import FBCollage from "react-native-fb-collage";
 import ScrollEnabledContext from "../../ScrollEnabledContext";
-import CommentItem from "../CommentItem/CommentItem";
+import CommentBottomSheet from "../CommentBottomSheet/CommentBottomSheet";
+import InteractionBottomSheet from "../InteractionBottomSheet/InteractionBottomSheet";
+import PostDetailsBottomSheet from "../PostDetailsBottomSheet/PostDetailsBottomSheet";
 import styles from "./styles";
 
 const PostItem = () => {
@@ -28,14 +27,11 @@ const PostItem = () => {
         'https://vcdn-sohoa.vnecdn.net/2013/09/13/Landscape-Black-White-2215-1379037677.jpg',
         'https://i.pinimg.com/736x/2e/68/0d/2e680d985d7778ea9d82eb18d4b42d2b.jpg',
         'https://vuinhiepanh.com/assets/uploads/2017/11/14-2.jpg',
-    ]
+    ];
 
     const [selectedInteraction, setSelectedInteraction] = useState(null);
     const [selectedInteractionColor, setSelectedInteractionColor] = useState(null);
-
-    const [comment, setComment] = useState('');
-    const [visible, setVisible] = useState(false);
-    const [showCommentModal, setShowCommentModal] = useState(false);
+    const [showInteractionBar, setShowInteractionBar] = useState(false);
     const [likeButtonSize, setLikeButtonSize] = useState({ width: 0, height: 0 });
     const [likeButtonPosition, setLikeButtonPosition] = useState({ x: 0, y: 0 });
 
@@ -43,7 +39,9 @@ const PostItem = () => {
     const setScrollEnabled = useContext(ScrollEnabledContext);
 
     const likeButtonRef = useRef(null);
-
+    const commentBottomSheetRef = useRef(null);
+    const interactionBottomSheetRef = useRef(null);
+    const postDetailsBottomSheetRef = useRef(null);
 
     const handleToggleLike = () => {
         if (selectedInteraction) {
@@ -53,7 +51,7 @@ const PostItem = () => {
         }
     }
 
-    const handleOpenDialog = () => {
+    const handleOpenInteractionBar = () => {
         if (likeButtonRef.current) {
             likeButtonRef.current.measure((fx, fy, width, height, px, py) => {
                 if (likeButtonSize.width === 0 && likeButtonSize.height === 0) {
@@ -61,22 +59,38 @@ const PostItem = () => {
                 }
 
                 setLikeButtonPosition({ x: px, y: py });
-                setVisible(true);
+                setShowInteractionBar(true);
                 setScrollEnabled(false);
             });
         }
     }
 
-    const handleHideDialog = () => {
-        setVisible(false);
+    const handleHideInteractionBar = () => {
+        setShowInteractionBar(false);
         setScrollEnabled(true);
     }
 
     const handleSelectInteraction = (value, color) => {
         setSelectedInteraction(value);
         setSelectedInteractionColor(color);
-        handleHideDialog();
+        handleHideInteractionBar();
     }
+
+    const handleOpenCommentBottomSheet = useCallback(() => {
+        commentBottomSheetRef.current?.present();
+    }, []);
+
+    const handleOpenInteractionBottomSheet = useCallback(() => {
+        interactionBottomSheetRef.current?.present();
+    }, []);
+
+    const handleCloseInteractionBottomSheet = useCallback(() => {
+        interactionBottomSheetRef.current?.close();
+    }, []);
+
+    const handleOpenPostDetailsBottomSheet = useCallback(() => {
+        postDetailsBottomSheetRef.current?.present();
+    }, []);
 
     return (
         <Card style={styles.post}>
@@ -115,11 +129,16 @@ const PostItem = () => {
                     Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                 </Paragraph>
 
-                <FBCollage
-                    style={styles.postContentImages}
-                    images={images}
-                    imageOnPress={(index, images) => console.info(`${index}: ${images}`)}
-                />
+                {images.length !== 0 &&
+                    <FBCollage
+                        style={{
+                            ...styles.postContentImages,
+                            height: images.length === 1 ? 400 : 200,
+                        }}
+                        images={images}
+                        imageOnPress={handleOpenPostDetailsBottomSheet}
+                    />
+                }
 
                 <View style={styles.postInteractionStatistics}>
                     <View style={{
@@ -127,7 +146,7 @@ const PostItem = () => {
                         alignItems: 'center',
                     }}>
                         <TouchableOpacity
-                            onPress={() => setShowInteractionModal(true)}
+                            onPress={handleOpenInteractionBottomSheet}
                             style={{ flexDirection: 'row' }}
                         >
                             <View style={{
@@ -157,7 +176,7 @@ const PostItem = () => {
                         </TouchableOpacity>
                     </View>
 
-                    <TouchableOpacity onPress={() => setShowCommentModal(true)}>
+                    <TouchableOpacity onPress={handleOpenCommentBottomSheet}>
                         <Text style={{ color: theme.colors.onSurfaceVariant }}>10 bình luận</Text>
                     </TouchableOpacity>
                 </View>
@@ -170,9 +189,10 @@ const PostItem = () => {
                     ref={likeButtonRef}
                     mode='text'
                     onPress={handleToggleLike}
-                    onLongPress={handleOpenDialog}
-                    rippleColor={visible ? 'transparent' : undefined}
+                    onLongPress={handleOpenInteractionBar}
+                    rippleColor={showInteractionBar ? 'transparent' : undefined}
                     labelStyle={{ color: selectedInteractionColor || theme.colors.onSurfaceVariant }}
+                    contentStyle={{ paddingVertical: 5 }}
                     style={styles.likeButton}
                 >
                     {selectedInteraction || 'Thích'}
@@ -180,17 +200,17 @@ const PostItem = () => {
 
                 <Portal>
                     <Dialog
-                        visible={visible}
+                        visible={showInteractionBar}
                         dismissable={false}
-                        onDismiss={handleHideDialog}
+                        onDismiss={handleHideInteractionBar}
                         style={{
-                            ...styles.dialog,
+                            ...styles.interactionBar,
                             left: likeButtonPosition.x + likeButtonSize.width / 18,
                             top: likeButtonPosition.y - 2.5 * likeButtonSize.height,
 
                         }}
                     >
-                        <Dialog.Actions style={styles.dialogActions}>
+                        <Dialog.Actions style={styles.interactionBarActions}>
                             <TouchableOpacity onPress={() => handleSelectInteraction('Thích', 'rgb(8, 102, 255)')}>
                                 <Avatar.Image
                                     size={34}
@@ -217,87 +237,23 @@ const PostItem = () => {
 
                 <Button
                     mode='text'
-                    onPress={() => setShowCommentModal(true)}
+                    onPress={handleOpenCommentBottomSheet}
                     labelStyle={{ color: theme.colors.onSurfaceVariant }}
+                    contentStyle={{ paddingVertical: 5 }}
                     style={styles.commentButton}
                 >
                     Bình luận
                 </Button>
             </Card.Actions>
 
-            <Modal
-                isVisible={showCommentModal}
-                style={{ margin: 0 }}
-            >
-                <View style={{
-                    ...styles.commentModalContainer,
-                    backgroundColor: theme.colors.background,
-                }}>
-                    <View style={styles.commentModalHeader}>
-                        <View style={styles.actionBar}>
-                            <IconButton
-                                icon='keyboard-backspace'
-                                size={30}
-                                onPress={() => setShowCommentModal(false)}
-                                style={{ margin: 0 }}
-                            />
-                        </View>
+            <CommentBottomSheet ref={commentBottomSheetRef} />
 
-                        <View style={styles.title}>
-                            <Title>Bình luận</Title>
-                        </View>
-                    </View>
+            <InteractionBottomSheet
+                ref={interactionBottomSheetRef}
+                onHide={handleCloseInteractionBottomSheet}
+            />
 
-
-                    <Divider />
-
-                    <ScrollView contentContainerStyle={styles.commentModalContent}>
-                        <CommentItem />
-                        <CommentItem />
-                        <CommentItem />
-                        <CommentItem />
-                        <CommentItem />
-                        <CommentItem />
-                        <CommentItem />
-                        <CommentItem />
-                        <CommentItem />
-                        <CommentItem />
-                        <CommentItem />
-                        <CommentItem />
-                        <CommentItem />
-                        <CommentItem />
-                    </ScrollView>
-
-                    <Divider />
-
-                    <View style={styles.commentModalFooter}>
-                        <View style={styles.commentInputWrapper}>
-                            <TextInput
-                                style={{
-                                    ...styles.commentInput,
-                                    color: theme.colors.onSecondaryContainer,
-                                    backgroundColor: theme.colors.secondaryContainer,
-                                }}
-                                multiline={true}
-                                value={comment}
-                                onChangeText={value => setComment(value)}
-                                placeholder='Viết bình luận...'
-                                placeholderTextColor={theme.colors.outline}
-                            />
-                        </View>
-
-                        <View style={styles.sendButtonWrapper}>
-                            <IconButton
-                                icon='send'
-                                size={30}
-                                onPress={() => console.info('Send')}
-                                iconColor={theme.colors.primary}
-                                style={{ margin: 0 }}
-                            />
-                        </View>
-                    </View>
-                </View>
-            </Modal>
+            <PostDetailsBottomSheet ref={postDetailsBottomSheetRef} />
         </Card >
     );
 }

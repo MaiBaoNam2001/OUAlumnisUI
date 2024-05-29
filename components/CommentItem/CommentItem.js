@@ -13,16 +13,20 @@ const CommentItem = () => {
 
     return (
         <View style={styles.contentItem}>
-            <Avatar.Image
-                size={44}
-                source={require('../../assets/images/default-avatar.png')}
-                style={styles.avatar}
-            />
+            <TouchableOpacity>
+                <Avatar.Image
+                    size={44}
+                    source={require('../../assets/images/default-avatar.png')}
+                    style={styles.avatar}
+                />
+            </TouchableOpacity>
 
             <View style={{ flex: 1 }}>
                 <Card style={{ borderRadius: 20 }}>
                     <Card.Content style={styles.comment}>
-                        <Text style={styles.fullName}>Mai Bảo Nam</Text>
+                        <TouchableOpacity>
+                            <Text style={styles.fullName}>Mai Bảo Nam</Text>
+                        </TouchableOpacity>
 
                         <Paragraph>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.

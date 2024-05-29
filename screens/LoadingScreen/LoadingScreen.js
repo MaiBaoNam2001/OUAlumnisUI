@@ -40,8 +40,8 @@ const LoadingScreen = () => {
                         try {
                             const res = await Axios.post(endpoints['login'], {
                                 'grant_type': 'refresh_token',
-                                'client_id': '8kWKQdFdPgGNHwn0cz23C16FL1moY6gyeUm3DiWd',
-                                'client_secret': 'Xq1XvdeEs4czbatnCDptL1dJRtyDocRSpvBL5Wl5zCuYFVTpCjuoeW7lqjnt0z0KmhIivFr4D5GTBI500TVWQDVYA5xMaus34tKnVgAaBbtoeDEAld86ymaipe7uLbur',
+                                'client_id': 'DKLDT4HuMKoWKP8RuPWnunlZMD2NSewi2c8yfnXq',
+                                'client_secret': 'lC1sJZs1nKS3q2K80JyVrVtCRqBfHGGe8eYNpQtqGDQKTxJ3KLfPX5Fp837mwovpbLidV6tVxa6PU5yCUn8PUoDHgsw6alL13x7HEa2Kc3XRxcvB6N2kBskQAahs4HCO',
                                 'refresh_token': refreshToken,
                             });
 
